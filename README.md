@@ -8,7 +8,7 @@ Inspired by "https://github.com/rasmusbergpalm/DeepLearnToolbox", but focus on C
 Features:
 * Basical layer (M-to-N transform): Full connection, Convolutional, Subsampling
 * Activation layer (pointwise transform): Sigmoid, Relu
-* Regularization: Dropout, Weight constraint
+* Regularization: Dropout (implemented as pointwise transform), Weight constraint
 * Parameter updating: Naive SGD, Momentum SGD
 * Loss: Least Square (for classification/regression), Softmax (a.k.a. logistic loss, for classification)
 
