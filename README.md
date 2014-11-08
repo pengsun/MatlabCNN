@@ -12,4 +12,4 @@ Features:
 * Parameter updating: Naive SGD, Momentum SGD
 * Loss: Least Square (for classification/regression), Softmax/Cross-entropy/Logistic-loss (for classification)
 
-**Caution: Feel free to use the code, but it is primarily for personal playing around and the developement is ongoing, so no guarantee for bug-free:)**
+**Caution: Feel free to use the code, but it is primarily for my personal playing around and the developement is ongoing, so no guarantee for bug-free:)**
