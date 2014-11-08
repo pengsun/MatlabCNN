@@ -1,6 +1,10 @@
 ### code
-* Save model; Load model and continue training
-* max pooling
+* myCNN
+ * Display loss 
+ * Save model; Load model and continue training
+* trans 
+ * max pooling
+* Maxout?
 
 ### doc
 * A note giving more mathematical details than those in "Notes on Convolutional Neural Networks" by Jake Bouvrie
