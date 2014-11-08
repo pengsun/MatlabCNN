@@ -21,15 +21,15 @@ K = size(train_y,1);
 h = myCNN();
 
 %%% layers
-% FC
-h.transArr{end+1} = trans_fc(1024); 
+% FC 
+h.transArr{end+1} = trans_fc(200); 
 % sigmoid
 h.transArr{end+1} = trans_act_sigm(); 
 % dropout
 h.transArr{end+1} = trans_act_dropout(); 
 
 % FC dropout
-h.transArr{end+1} = trans_fc(1024); 
+h.transArr{end+1} = trans_fc(200); 
 % sigmoid
 h.transArr{end+1} = trans_act_sigm(); 
 % dropout

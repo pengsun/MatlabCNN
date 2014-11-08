@@ -3,7 +3,6 @@ classdef myCNN
   %   Detailed explanation goes here
   
   properties
-    alpha; % step size
     batchsize; % #instances in a batch
     numepochs; % #epochs
 
@@ -12,19 +11,18 @@ classdef myCNN
     %   .a: [Hi,Wi,Mi,N]. Activations. Height,Width,#Maps,#instances
     %   .d: [Hi,Wi,Mi,N]. Deltas. Height,Width,#Maps,#instances
     transArr; 
-    % {L}. struct transArr{i} descirbes the transform from dataArr{i} to
-    % dataArr{i+1}
+    % {L}. struct. transArr{i} descirbes the transform from dataArr{i} to
+    % dataArr{i+1}; is-a trans_basic
     
     lossType;
     % [1]. class derived from loss_basic
 
-    rL; % [T]. ?
+    rL; % [T]. 
     L; % [1]. current loss
   end
   
   methods
     function obj = myCNN(obj)
-      obj.alpha = 0.5; % step size
       obj.batchsize = 50; % #instances in a batch
       obj.numepochs = 1; % #epochs
       

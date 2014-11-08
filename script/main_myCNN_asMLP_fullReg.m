@@ -1,10 +1,11 @@
-%% ex1 Train a 6c-2s-12c-2s Convolutional neural network 
-%will run 1 epoch in about 200 second and get around 11% error. 
-%With 100 epochs you'll get around 1.2% error
-%
-% dropout
-% weight constraint
-% SGD with momentum
+%% for MNIST. (Input=28x28)-800-800-(Output=10)
+% 
+% dropout:
+%   0.5 for hidden layer, 0.8 for input layer
+% Max-norm:
+%   c = 2 for the incoming weight vector for each hidden unit
+% SGD with momentum:
+%   
 %% data
 load mnist_uint8;
 
@@ -25,27 +26,33 @@ K = size(train_y,1);
 h = myCNN();
 
 % parameters
-h.alpha = 1;
 h.batchsize = 100;
-h.numepochs = 15;
+h.numepochs = 2000;
 cc = 2;
 
 %%% layers
+% dropout for input layer
+h.transArr{end+1} = trans_act_dropout(0.8); 
+
 % FC
-h.transArr{end+1} = trans_fc(200); 
+h.transArr{end+1} = trans_fc(800); 
 h.transArr{end}.c = cc;
-h.transArr{end}.hpmW = param_mgr_naive();
-h.transArr{end}.hpmb = param_mgr_naive();
+% h.transArr{end}.hpmW = param_mgr_naive();
+% h.transArr{end}.hpmb = param_mgr_naive();
+h.transArr{end}.hpmW = param_mgr_momentum();
+h.transArr{end}.hpmb = param_mgr_momentum();
 % sigmoid
 h.transArr{end+1} = trans_act_sigm(); 
 % dropout
 h.transArr{end+1} = trans_act_dropout(); 
 
 % FC
-h.transArr{end+1} = trans_fc(200); 
+h.transArr{end+1} = trans_fc(800); 
 h.transArr{end}.c = cc;
-h.transArr{end}.hpmW = param_mgr_naive();
-h.transArr{end}.hpmb = param_mgr_naive();
+% h.transArr{end}.hpmW = param_mgr_naive();
+% h.transArr{end}.hpmb = param_mgr_naive();
+h.transArr{end}.hpmW = param_mgr_momentum();
+h.transArr{end}.hpmb = param_mgr_momentum();
 % sigmoid
 h.transArr{end+1} = trans_act_sigm(); 
 % dropout
@@ -54,14 +61,16 @@ h.transArr{end+1} = trans_act_dropout();
 % full connection, #output map = #classes
 h.transArr{end+1} = trans_fc(K);
 h.transArr{end}.c = cc;
-h.transArr{end}.hpmW = param_mgr_naive();
-h.transArr{end}.hpmb = param_mgr_naive();
+% h.transArr{end}.hpmW = param_mgr_naive();
+% h.transArr{end}.hpmb = param_mgr_naive();
+h.transArr{end}.hpmW = param_mgr_momentum();
+h.transArr{end}.hpmb = param_mgr_momentum();
 
 %%% loss
 h.lossType = loss_softmax();
 %% train
-
 h = h.train(train_x, train_y);
+save('mo_tmp.mat', 'h');
 %% test
 pre_y = h.test(test_x);
 [~,pre_c] = max(pre_y);

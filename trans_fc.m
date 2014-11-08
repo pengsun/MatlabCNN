@@ -50,7 +50,6 @@ classdef trans_fc < trans_basic
       tmp = WW * data_o.d; % 
       
       % restore to multi-dim array
-      N = size(data_o.d, 2);
       data_i.d = reshape(tmp, obj.szs_in);
     end % deriv_input
     

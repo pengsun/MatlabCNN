@@ -40,12 +40,12 @@ classdef param_mgr_momentum < param_mgr_basic
     function pt = get_pt(obj, t)
       if (t < obj.T)
         tmp = t/obj.T;
-        pt = tmp* obj.pi + (1-tmp)* obj.pf;
+        pt = (1-tmp)* obj.pi + tmp* obj.pf;
       else
         pt = obj.pf;
       end
-    end
-  end
+    end % get_pt
+  end % methods
   
 end
 
