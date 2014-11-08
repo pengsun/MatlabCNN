@@ -10,5 +10,6 @@ Features:
 * Activation layer (pointwise transform): Sigmoid, Relu
 * Regularization: Dropout, Weight constraint
 * Parameter updating: Naive SGD, Momentum SGD
+* Loss: Least Square (for classification/regression), Softmax (a.k.a. logistic loss, for classification)
 
 **Caution: developement ongoing, probable errors/bugs and missing features**
