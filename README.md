@@ -8,8 +8,8 @@ Inspired by "https://github.com/rasmusbergpalm/DeepLearnToolbox", but focus on C
 Features:
 * Basical layer (M-to-N transform): Full connection, Convolutional, Subsampling
 * Activation layer (pointwise transform): Sigmoid, Relu
-* Regularization: Dropout (implemented as pointwise transform), Weight constraint
+* Regularization: Dropout (implemented as pointwise transform), Max norm
 * Parameter updating: Naive SGD, Momentum SGD
-* Loss: Least Square (for classification/regression), Softmax (a.k.a. logistic loss, for classification)
+* Loss: Least Square (for classification/regression), Softmax/Cross-entropy/Logistic-loss (for classification)
 
-**Caution: developement ongoing, probable errors/bugs and missing features**
+**Caution: Feel free to use the code, but it is primarily for personal playing around and the developement is ongoing, so no guarantee for bug-free:)**
