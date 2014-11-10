@@ -3,11 +3,11 @@ MatlabCNN
 
 Matlab codes for 2D Convolutional Neural Network
 
-Inspired by "https://github.com/rasmusbergpalm/DeepLearnToolbox", but focus on Convolutional Neural Network (CNN) and Multilayer Perceptron (MLP). 
+Inspired by "https://github.com/rasmusbergpalm/DeepLearnToolbox" and "https://github.com/vlfeat/matconvnet", but aims at educational purpose. Provides carefully desined matlab class hierachy that helps one to understand the workflow of Convolutional Neural Network and Multi Layer Perceptron (MLP) by simply reading the code. 
 
 ## Summary:
-* Basical layer (M-to-N transform): Full connection, Convolutional, Subsampling
-* Auxiliary layer: Contrast/Response Normalization
+* Basical layer (M-to-N transform): Full connection, Convolutional, Subsampling (Average Pooling)
+* Auxiliary layer: Local Response Normalization
 * Activation layer (pointwise transform): Sigmoid, Relu
 * Regularization: Dropout (implemented as pointwise transform), Max norm
 * Parameter updating: Naive SGD, Momentum SGD
