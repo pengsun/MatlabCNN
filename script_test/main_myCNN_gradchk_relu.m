@@ -1,9 +1,8 @@
 %% data
 N = 21;
 nb = 3;
-X = rand(28,28,N);
-Y = rand(10,N);
-K = size(Y,1);
+K = 10;
+[X,Y] = make_rand_inst(28,28, K, N);
 %% init
 h = myCNN();
 
@@ -38,7 +37,6 @@ h.transArr{end+1} = trans_act_relu();
 h.lossType = loss_le();
 
 %%% other parameters
-h.alpha = 0.5;
 h.batchsize = 50;
 h.numepochs = 2;
 %% 
@@ -53,13 +51,15 @@ for j = 1 : nb
   if (j==1)
     sz(1) = size(batch_x,1); 
     sz(2) = size(batch_x,2);
+    sz(3) = 1;
+    sz(4) = N/nb;
     h = init_trans_param(h, sz);
   end
   
   h = ff(h, batch_x);
   h = bp(h, batch_y);
-  myCNN_gradchk(h, batch_x, batch_y, 1e-4, 1e-1);
+  myCNN_gradchk(h, batch_x, batch_y, 1e-4, 1e-5);
   fprintf('Congratulations: gradient checking done\n');
   
-  h = update_param_grad(h);
+%   h = update_param_grad(h);
 end

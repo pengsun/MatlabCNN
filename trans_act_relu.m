@@ -19,4 +19,3 @@ classdef trans_act_relu < trans_act_basic
   end
   
 end
-

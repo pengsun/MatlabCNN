@@ -50,7 +50,6 @@ h.transArr{end+1} = trans_act_sigm();
 h.lossType = loss_le();
 
 %%% other parameters
-h.alpha = 1;
 h.batchsize = 50;
 h.numepochs = 2;
 %% train

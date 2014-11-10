@@ -7,6 +7,7 @@ Inspired by "https://github.com/rasmusbergpalm/DeepLearnToolbox", but focus on C
 
 ## Summary:
 * Basical layer (M-to-N transform): Full connection, Convolutional, Subsampling
+* Auxiliary layer: Contrast/Response Normalization
 * Activation layer (pointwise transform): Sigmoid, Relu
 * Regularization: Dropout (implemented as pointwise transform), Max norm
 * Parameter updating: Naive SGD, Momentum SGD

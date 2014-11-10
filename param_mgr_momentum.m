@@ -48,6 +48,3 @@ classdef param_mgr_momentum < param_mgr_basic
   end % methods
   
 end
-
-
-

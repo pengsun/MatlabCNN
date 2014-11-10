@@ -10,7 +10,7 @@ train_y = double(train_y');
 test_y = double(test_y');
 K = size(train_y,1);
 %%
-rand('state',0);
+% rand('state',0);
 tr_ind = randsample(60000, 20000);
 train_x = train_x(:,:, tr_ind);
 train_y = train_y(:, tr_ind);
@@ -41,11 +41,6 @@ h.transArr{end+1} = trans_act_sigm();
 % subsample, scale 2
 h.transArr{end+1} = trans_sub(2);
 
-% % full connection, #output map = #classes
-% h.transArr{end+1} = trans_fc(100);
-% % sigmoid
-% h.transArr{end+1} = trans_act_sigm(); 
-
 % full connection, #output map = #classes
 h.transArr{end+1} = trans_fc(K);
 h.transArr{end}.hpmW = param_mgr_naive();
@@ -57,7 +52,6 @@ h.transArr{end}.hpmb = param_mgr_naive();
 h.lossType = loss_softmax();
 
 %%% other parameters
-h.alpha = 1;
 h.batchsize = 50;
 h.numepochs = 1;
 %% train
