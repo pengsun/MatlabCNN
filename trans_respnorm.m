@@ -48,10 +48,10 @@ classdef trans_respnorm < trans_basic
       data_o.b2 = ipermute(b2p, dim_prm); % [M,H,W,N] -> [H,W,M,N] 
       
       % b2 -> b3
-      data_o.b3 = (obj.k + obj.alpha .* data_o.b2).^(-obj.beta);
+      data_o.b3 = (obj.k + obj.alpha .* data_o.b2).^(obj.beta);
       
       % b3 -> a_o
-      data_o.a = data_i.a .* data_o.b3;
+      data_o.a = data_i.a ./ data_o.b3;
     end % ff
     
     function data_i = deriv_input(obj, data_i, data_o)
