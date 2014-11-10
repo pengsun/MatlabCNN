@@ -10,12 +10,12 @@ h = myCNN();
 % fc
 h.transArr{end+1} = trans_fc(40); 
 % sigmoid
-h.transArr{end+1} = trans_act_sigm(); 
+h.transArr{end+1} = trans_act_relu(); 
 
 % fc
 h.transArr{end+1} = trans_fc(20);
 % sigmoid
-h.transArr{end+1} = trans_act_sigm(); 
+h.transArr{end+1} = trans_act_relu(); 
 
 % fc
 h.transArr{end+1} = trans_fc(K);

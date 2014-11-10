@@ -45,7 +45,6 @@ h.transArr{end}.c = cc;
 h.lossType = loss_softmax();
 
 %%% other parameters
-h.alpha = 1;
 h.batchsize = 50;
 h.numepochs = 4;
 %% train

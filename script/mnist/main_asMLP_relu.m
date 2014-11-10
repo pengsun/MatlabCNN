@@ -18,31 +18,27 @@ K = size(train_y,1);
 % test_x = test_x(:,:, te_ind);
 % test_y = test_y(:, te_ind);
 %% init
-cc = 2;
 
 h = myCNN();
 
 %%% layers
 % fc
-h.transArr{end+1} = trans_fc(200);
-h.transArr{end}.c = cc;
+h.transArr{end+1} = trans_fc(300);
 h.transArr{end}.hpmW = param_mgr_naive();
 h.transArr{end}.hpmb = param_mgr_naive();
 % sigmoid
-h.transArr{end+1} = trans_act_sigm(); 
+h.transArr{end+1} = trans_act_relu(); 
 
 % fc
-h.transArr{end+1} = trans_fc(200); 
-h.transArr{end}.c = cc;
+h.transArr{end+1} = trans_fc(300); 
 h.transArr{end}.hpmW = param_mgr_naive();
 h.transArr{end}.hpmb = param_mgr_naive();
 % sigmoid
-h.transArr{end+1} = trans_act_sigm(); 
+h.transArr{end+1} = trans_act_relu(); 
 
 
 % fc, #output map = #classes
 h.transArr{end+1} = trans_fc(K);
-h.transArr{end}.c = cc;
 h.transArr{end}.hpmW = param_mgr_naive();
 h.transArr{end}.hpmb = param_mgr_naive();
 
@@ -50,9 +46,8 @@ h.transArr{end}.hpmb = param_mgr_naive();
 h.lossType = loss_softmax();
 
 %%% other parameters
-h.alpha = 1;
 h.batchsize = 50;
-h.numepochs = 4;
+h.numepochs = 2;
 %% train
 h = h.train(train_x, train_y);
 %% test

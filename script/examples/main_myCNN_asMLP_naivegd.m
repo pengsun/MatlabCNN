@@ -10,50 +10,48 @@ train_y = double(train_y');
 test_y = double(test_y');
 K = size(train_y,1);
 %%
-rand('state',0);
-tr_ind = randsample(60000, 20000);
-train_x = train_x(:,:, tr_ind);
-train_y = train_y(:, tr_ind);
-te_ind = randsample(10000, 2000);
-test_x = test_x(:,:, te_ind);
-test_y = test_y(:, te_ind);
+% rand('state',0);
+% tr_ind = randsample(60000, 20000);
+% train_x = train_x(:,:, tr_ind);
+% train_y = train_y(:, tr_ind);
+% te_ind = randsample(10000, 2000);
+% test_x = test_x(:,:, te_ind);
+% test_y = test_y(:, te_ind);
 %% init
+cc = 2;
+
 h = myCNN();
 
 %%% layers
-% convolution, kernel size 5, #output map = 6
-h.transArr{end+1} = trans_conv(5, 6); 
+% fc
+h.transArr{end+1} = trans_fc(200);
+h.transArr{end}.c = cc;
+h.transArr{end}.hpmW = param_mgr_naive();
+h.transArr{end}.hpmb = param_mgr_naive();
 % sigmoid
 h.transArr{end+1} = trans_act_sigm(); 
 
-% subsample, scale 2
-h.transArr{end+1} = trans_sub(2); 
-
-% convolution, kernel size 5, #output map = 12
-h.transArr{end+1} = trans_conv(5, 12);
+% fc
+h.transArr{end+1} = trans_fc(200); 
+h.transArr{end}.c = cc;
+h.transArr{end}.hpmW = param_mgr_naive();
+h.transArr{end}.hpmb = param_mgr_naive();
 % sigmoid
 h.transArr{end+1} = trans_act_sigm(); 
 
-% subsample, scale 2
-h.transArr{end+1} = trans_sub(2);
 
-% % full connection, #output map = #classes
-% h.transArr{end+1} = trans_fc(100);
-% % sigmoid
-% h.transArr{end+1} = trans_act_sigm(); 
-
-% full connection, #output map = #classes
+% fc, #output map = #classes
 h.transArr{end+1} = trans_fc(K);
-% % sigmoid
-% h.transArr{end+1} = trans_act_sigm(); 
+h.transArr{end}.c = cc;
+h.transArr{end}.hpmW = param_mgr_naive();
+h.transArr{end}.hpmb = param_mgr_naive();
 
 %%% loss
 h.lossType = loss_softmax();
 
 %%% other parameters
-h.alpha = 1;
 h.batchsize = 50;
-h.numepochs = 1;
+h.numepochs = 4;
 %% train
 h = h.train(train_x, train_y);
 %% test
