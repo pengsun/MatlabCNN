@@ -113,10 +113,16 @@ classdef trans_conv < trans_basic
       % randomly initialize the kernels
       Min = szs(3);
       Mout = obj.M;
-      obj.ker = 2*(rand(obj.ks,obj.ks,Min, Mout) - 0.5); % in range [-1,+1]
-      fan_in = obj.ks*obj.ks*Min;
-      fan_out = Mout;
-      obj.ker = obj.ker * sqrt(6/(fan_in + fan_out));
+      f = 0.01;
+      obj.ker = f * randn(obj.ks,obj.ks,Min, Mout); 
+
+%       Min = szs(3);
+%       Mout = obj.M;
+%       obj.ker = 2*(rand(obj.ks,obj.ks,Min, Mout) - 0.5); % in range [-1,+1]
+%       fan_in = obj.ks*obj.ks*Min;
+%       fan_out = Mout;
+%       obj.ker = obj.ker * sqrt(6/(fan_in + fan_out));
+
       % set zeros the bias
       obj.b = zeros(Mout,1);
       

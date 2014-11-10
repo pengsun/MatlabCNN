@@ -95,10 +95,14 @@ classdef trans_fc < trans_basic
       obj.szs_out = [Mout, szs(end)];
       
       % randomly initialize the weights
-      obj.W = 2*(rand([szs(1:end-1),Mout]) - 0.5); % in range [-1,+1]
-      fan_in = prod(szs);
-      fan_out = Mout;
-      obj.W = obj.W * sqrt(6/(fan_in + fan_out));
+      f = 0.01;
+      obj.W = f*randn([szs(1:end-1),Mout]); % in range [-1,+1]
+
+%       obj.W = 2*(rand([szs(1:end-1),Mout]) - 0.5); % in range [-1,+1]
+%       fan_in = prod(szs);
+%       fan_out = Mout;
+%       obj.W = obj.W * sqrt(6/(fan_in + fan_out));
+      
       % ...and set zeros the bias
       obj.b = zeros(Mout,1);
     end % init_param
