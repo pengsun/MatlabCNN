@@ -19,9 +19,10 @@ Inspired by "https://github.com/rasmusbergpalm/DeepLearnToolbox" and "https://gi
 ### code
 * myCNN
  * Display loss 
- * Save model; Load model and continue training
+ * Continue training from loaded model
 * trans 
- * max pooling
+ * Max pooling
+ * Convolutional layer picking random subset of input feature maps
 * Maxout?
 
 ### doc
