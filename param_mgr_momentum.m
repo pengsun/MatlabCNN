@@ -1,5 +1,5 @@
 classdef param_mgr_momentum < param_mgr_basic
-  %PARAM_MGR SGD with momentum
+  %PARAM_MGR SGD with variable momentum
   %   See the paper "Improvingneural networks by preventing
   %   co-adaptation of feature detectors". Hinton et al.
   
