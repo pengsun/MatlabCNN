@@ -9,8 +9,8 @@ Inspired by "https://github.com/rasmusbergpalm/DeepLearnToolbox" and "https://gi
 * Basical layer (M-to-N transform): Full connection, Convolutional, Subsampling (Average Pooling)
 * Auxiliary layer: Local Response Normalization
 * Activation layer (pointwise transform): Sigmoid, Relu
-* Regularization: Dropout (implemented as pointwise transform), Max norm
-* Parameter updating: Naive SGD, Momentum SGD
+* Regularization: Dropout (implemented as pointwise transform), Max-norm constraint
+* Parameter updating: Stochastic Gradient Descent (mini-batch) with Momentum and Weight Decay
 * Loss: Least Square (for classification/regression), Softmax/Cross-entropy/Logistic-loss (for classification)
 
 **Caution: Feel free to use the code, but it is primarily for my personal playing around and the developement is ongoing, so no guarantee for bug-free:)**
