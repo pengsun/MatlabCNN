@@ -25,7 +25,7 @@ classdef trans_act_dropout < trans_act_basic
       end
     end
     
-    function data_o = ff(obj, data_i)
+    function [obj, data_o] = ff(obj, data_i)
       % identity transform
       data_o.a = data_i.a;
       % dropout

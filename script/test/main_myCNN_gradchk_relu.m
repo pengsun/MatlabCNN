@@ -1,4 +1,5 @@
 %% data
+clear all;
 N = 21;
 nb = 3;
 K = 10;
@@ -22,11 +23,6 @@ h.transArr{end+1} = trans_act_relu();
 
 % subsample, scale 2
 h.transArr{end+1} = trans_sub(2);
-
-% convolution, kernel size 2, #output map = 4
-h.transArr{end+1} = trans_conv(2, 4);
-% activation
-h.transArr{end+1} = trans_act_relu(); 
 
 % full connection, #output map = #classes
 h.transArr{end+1} = trans_fc(K); 
@@ -56,7 +52,7 @@ for j = 1 : nb
   
   h = ff(h, batch_x);
   h = bp(h, batch_y);
-  myCNN_gradchk(h, batch_x, batch_y, 1e-4, 1e-5);
+  myCNN_gradchk(h, batch_x, batch_y, 1e-4, 1e-4);
   fprintf('Congratulations: gradient checking done\n');
   
 %   h = update_param_grad(h);

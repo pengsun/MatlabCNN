@@ -1,32 +1,37 @@
 %% data
-N = 27;
+clear all;
+N = 21;
 nb = 3;
 K = 10;
-[X,Y] = make_rand_inst(14,14, K, N);
+[X,Y] = make_rand_inst(28,28, K, N);
 %% init
 h = myCNN();
 
 %%% layers
-% convolution, kernel size 5, #output map = 7
-h.transArr{end+1} = trans_conv(5, 7); 
-% activation
+% convolution, kernel size 5, #output map = 2
+h.transArr{end+1} = trans_conv(5, 2); 
+% sigmoid
 h.transArr{end+1} = trans_act_sigm(); 
-% contrast normalization
-h.transArr{end+1} = trans_respnorm();
 
 % subsample, scale 2
-h.transArr{end+1} = trans_sub(2); 
+h.transArr{end+1} = trans_mp(2); 
+
+% convolution, kernel size 5, #output map = 3
+h.transArr{end+1} = trans_conv(5, 3);
+% sigmoid
+h.transArr{end+1} = trans_act_sigm(); 
+
+% subsample, scale 2
+h.transArr{end+1} = trans_mp(2);
 
 % full connection, #output map = #classes
 h.transArr{end+1} = trans_fc(K);
-% sigmoid
-h.transArr{end+1} = trans_act_sigm(); 
 
 %%% loss type
 h.lossType = loss_softmax();
 
 %%% other parameters
-h.batchsize = N/nb;
+h.batchsize = 50;
 h.numepochs = 2;
 %% 
 bpart = batchPart(N,nb); % instance batches

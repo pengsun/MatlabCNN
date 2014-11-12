@@ -25,7 +25,7 @@ classdef trans_fc < trans_basic
       obj.hpmb = param_mgr_momentum();
     end
     
-    function data_o = ff(obj, data_i) 
+    function [obj, data_o] = ff(obj, data_i) 
     % Feed Forward  
     %
       sz = size(data_i.a);
@@ -96,7 +96,7 @@ classdef trans_fc < trans_basic
       
       % randomly initialize the weights
       f = 0.01;
-      obj.W = f*randn([szs(1:end-1),Mout]); % in range [-1,+1]
+      obj.W = f*randn([szs(1:end-1),Mout]); 
 
 %       obj.W = 2*(rand([szs(1:end-1),Mout]) - 0.5); % in range [-1,+1]
 %       fan_in = prod(szs);

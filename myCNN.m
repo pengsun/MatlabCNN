@@ -106,8 +106,8 @@ classdef myCNN
       dataPreArr{1}.a(:,:,1,:) = X;
       % calculate .a for dataTeArr{2:L+1}
       for i = 1 : numel(obj.transArr)
-        dataPreArr{i+1} = obj.transArr{i}.ff(...
-          dataPreArr{i} );
+        [obj.transArr{i}, dataPreArr{i+1}] = ff(...
+          obj.transArr{i}, dataPreArr{i} );
       end % for i
       
       % set Ypre
@@ -139,8 +139,8 @@ classdef myCNN
       
       % calculate .a for dataArr{2:L+1}
       for i = 1 : numel(obj.transArr)
-        obj.dataArr{i+1} = obj.transArr{i}.ff(...
-          obj.dataArr{i} );
+        [obj.transArr{i}, obj.dataArr{i+1}] = ff(...
+          obj.transArr{i}, obj.dataArr{i} );
       end % for i
     end % ff
     

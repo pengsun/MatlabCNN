@@ -29,7 +29,7 @@ classdef trans_respnorm < trans_basic
 
     end % trans_connorm
     
-    function data_o = ff(obj, data_i) 
+    function [obj, data_o] = ff(obj, data_i) 
 %       data_o.a = data_i.a;
       
       %

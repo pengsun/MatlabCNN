@@ -6,7 +6,7 @@ classdef trans_act_relu < trans_act_basic
   end
   
   methods
-    function data_o = ff(obj, data_i)
+    function [obj, data_o] = ff(obj, data_i)
       data_o.a = max(0, data_i.a);
     end % ff
     

@@ -1,32 +1,27 @@
-classdef trans_sub < trans_basic
-  %TRANS_SUB Summary of this class goes here
-  %   Detailed explanation goes here
+classdef trans_mp < trans_basic
+  %TRANS_MP Max Pooling
+  %   Use Jonathan Masci's implementation
   
   properties
     scale; % scale for subsampling
+    idx; % index for the local maximum elements
   end
   
   methods
-    function obj = trans_sub(scale_)
+    function obj = trans_mp(scale_)
       obj.scale = scale_;
     end
     
     function [obj, data_o] = ff(obj, data_i) 
     %
-      % first average
-      avg_tmpl = ones(obj.scale,obj.scale);
-      avg_tmpl = avg_tmpl./numel(avg_tmpl);
-      tmp = convn(data_i.a, avg_tmpl, 'valid');
-      
-      % then subsample every obj.scale pixels
-      data_o.a = tmp(1:obj.scale:end, 1:obj.scale:end, :,:);
+      [data_o.a, obj.idx] = MaxPooling(data_i.a, [obj.scale,obj.scale]);
     end % ff    
     
     function data_i = deriv_input(obj, data_i, data_o)
-      s = obj.scale;
-      % data_i.d: [Hi,Wi,Mi,N]
-      % data_o.d: [Ho,Wo,Mo,N], where [Hi,Wi] = s*[Ho,Wo]
-      data_i.d  = expand(data_o.d, [s,s,1,1]) ./ (s*s);
+    % data_i.d: [Hi,Wi,Mi,N]
+    % data_o.d: [Ho,Wo,Mo,N], where [Hi,Wi] = s*[Ho,Wo]
+      data_i.d  = zeros( obj.szs_in );
+      data_i.d( obj.idx ) = data_o.d(:);
     end % deriv_input
     
     function obj = init_param(obj, szs_in_)

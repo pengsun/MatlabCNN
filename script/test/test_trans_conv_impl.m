@@ -1,4 +1,4 @@
-classdef trans_conv < trans_basic
+classdef trans_conv_impl < trans_conv
   %TRANS_CONV Summary of this class goes here
   %   Detailed explanation goes here
   
@@ -20,7 +20,7 @@ classdef trans_conv < trans_basic
   end
   
   methods
-    function obj = trans_conv(ks_, M_)
+    function obj = trans_conv_impl(ks_, M_)
       obj.ks = ks_;
       obj.M = M_;
       
@@ -28,7 +28,7 @@ classdef trans_conv < trans_basic
       obj.hpmb = param_mgr_momentum();
     end
     
-    function [obj, data_o] = ff(obj, data_i) 
+    function data_o = ff(obj, data_i) 
     % 
       sz = size( data_i.a );
       data_o.a = zeros( [obj.szs_out(1:end-1), sz(end)] );
@@ -114,7 +114,7 @@ classdef trans_conv < trans_basic
       Min = szs(3);
       Mout = obj.M;
       f = 0.01;
-      obj.ker = f * randn( [obj.ks,obj.ks,Min, Mout] ); 
+      obj.ker = f * randn(obj.ks,obj.ks,Min, Mout); 
 
 %       Min = szs(3);
 %       Mout = obj.M;

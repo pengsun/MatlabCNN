@@ -6,7 +6,7 @@ classdef trans_act_basic < trans_basic
   end
   
   methods
-    function data_o = ff(obj, data_i) 
+    function [obj, data_o] = ff(obj, data_i) 
       error('Should not be called in a base class!\n');
     end
     
