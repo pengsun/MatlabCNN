@@ -33,35 +33,35 @@ h = myCNN();
 %%% layers
 % convolution, kernel size 5, #output map = 6
 h.transArr{end+1} = trans_conv(5, 6); 
-h.transArr{end}.hpmker = param_mgr_naive();
-h.transArr{end}.hpmb = param_mgr_naive();
-% activation
-h.transArr{end+1} = trans_act_relu();
+h.transArr{end}.hpmker = param_mgr_fmwl();
+h.transArr{end}.hpmb = param_mgr_fmwl();
 
 % subsample, scale 2
 h.transArr{end+1} = trans_mp(2); 
+% activation
+h.transArr{end+1} = trans_act_relu(); % trick: after mp, less computations
 
 % convolution, kernel size 5, #output map = 12
 h.transArr{end+1} = trans_conv(5, 12);
-h.transArr{end}.hpmker = param_mgr_naive();
-h.transArr{end}.hpmb = param_mgr_naive();
-% activation
-h.transArr{end+1} = trans_act_relu();
+h.transArr{end}.hpmker = param_mgr_fmwl();
+h.transArr{end}.hpmb = param_mgr_fmwl();
 
 % subsample, scale 2
 h.transArr{end+1} = trans_mp(2);
+% activation
+h.transArr{end+1} = trans_act_relu();
 
 % full connection, #output map = #classes
 h.transArr{end+1} = trans_fc(K);
-h.transArr{end}.hpmW = param_mgr_naive();
-h.transArr{end}.hpmb = param_mgr_naive();
+h.transArr{end}.hpmW = param_mgr_fmwl();
+h.transArr{end}.hpmb = param_mgr_fmwl();
 
 %%% loss
 h.lossType = loss_softmax();
 
 %%% other parameters
 h.batchsize = 50;
-h.numepochs = 2;
+h.numepochs = 20;
 %% train
 % rand('state',0);
 h = h.train(train_x, train_y);

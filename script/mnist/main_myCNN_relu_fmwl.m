@@ -10,13 +10,13 @@ train_y = double(train_y');
 test_y = double(test_y');
 K = size(train_y,1);
 %%
-% rand('state',0);
-% tr_ind = randsample(60000, 20000);
-% train_x = train_x(:,:, tr_ind);
-% train_y = train_y(:, tr_ind);
-% te_ind = randsample(10000, 2000);
-% test_x = test_x(:,:, te_ind);
-% test_y = test_y(:, te_ind);
+rand('state',0);
+tr_ind = randsample(60000, 20000);
+train_x = train_x(:,:, tr_ind);
+train_y = train_y(:, tr_ind);
+te_ind = randsample(10000, 2000);
+test_x = test_x(:,:, te_ind);
+test_y = test_y(:, te_ind);
 %% Image Mean Subtraction
 tmp = cat(3, train_x, test_x);
 mu = mean(tmp, 3);
@@ -27,9 +27,6 @@ test_x = bsxfun(@minus, test_x, mu);
 h = myCNN();
 
 %%% layers
-% % dropout for input
-% h.transArr{end+1} = trans_act_dropout(0.8); 
-
 % convolution, kernel size 5, #output map = 6
 h.transArr{end+1} = trans_conv(5, 6); 
 h.transArr{end}.hpmker = param_mgr_fmwl();
@@ -39,8 +36,6 @@ h.transArr{end+1} = trans_act_relu();
 
 % subsample, scale 2
 h.transArr{end+1} = trans_sub(2); 
-% activation
-% h.transArr{end+1} = trans_act_relu();
 
 % convolution, kernel size 5, #output map = 12
 h.transArr{end+1} = trans_conv(5, 12);
@@ -51,15 +46,6 @@ h.transArr{end+1} = trans_act_relu();
 
 % subsample, scale 2
 h.transArr{end+1} = trans_sub(2);
-% activation
-% h.transArr{end+1} = trans_act_relu();
-
-% % full connection, #output map = 100
-% h.transArr{end+1} = trans_fc(100);
-% h.transArr{end}.hpmW = param_mgr_naive();
-% h.transArr{end}.hpmb = param_mgr_naive();
-% % activation
-% h.transArr{end+1} = trans_act_relu();
 
 % full connection, #output map = #classes
 h.transArr{end+1} = trans_fc(K);

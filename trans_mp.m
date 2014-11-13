@@ -1,10 +1,10 @@
 classdef trans_mp < trans_basic
-  %TRANS_MP Max Pooling
-  %   Use Jonathan Masci's implementation
+  %TRANS_MP Non-overlapping Max Pooling
+  %   Use Jonathan Masci's implementation (MaxPooling.cpp and .m)
   
   properties
-    scale; % scale for subsampling
-    idx; % index for the local maximum elements
+    scale; % scale (window size) for subsampling
+    idx; % index (linear) for the local maximum elements
   end
   
   methods

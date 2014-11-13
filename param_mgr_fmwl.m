@@ -5,7 +5,7 @@ classdef param_mgr_fmwl < param_mgr_basic
   %   rate is used. The same for other settings.
   
   properties
-    epsilon0; % for learning rate 
+    epsilon; % for learning rate 
     wd; % for weight decay
     p; % for momentum
     
@@ -14,7 +14,7 @@ classdef param_mgr_fmwl < param_mgr_basic
   
   methods
     function obj = param_mgr_fmwl()
-      obj.epsilon0 = 0.01;
+      obj.epsilon = 0.01;
       obj.wd = 0.0005;
       obj.p = 0.9;
       
@@ -24,9 +24,9 @@ classdef param_mgr_fmwl < param_mgr_basic
     function [obj, theta] = update_param(obj, theta, dtheta, t)
       % update using gradient with momentum
 
-      del = obj.p * obj.del_theta ...
-            - obj.wd * obj.epsilon0 * theta ...
-            - obj.epsilon0 * dtheta;
+      del = obj.p * obj.del_theta ... % momentum of increment at last iteration
+            - obj.wd * obj.epsilon * theta ... % weight decay
+            - obj.epsilon * dtheta; % gradient
       theta = theta + del;
       
       % record

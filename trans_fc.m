@@ -94,11 +94,12 @@ classdef trans_fc < trans_basic
       Mout = obj.Mo;
       obj.szs_out = [Mout, szs(end)];
       
-      % randomly initialize the weights
+      % randomly initialize the weights: 0-mean gaussian
       f = 0.01;
       obj.W = f*randn([szs(1:end-1),Mout]); 
 
-%       obj.W = 2*(rand([szs(1:end-1),Mout]) - 0.5); % in range [-1,+1]
+%       % uniformly random in range [-1,+1]
+%       obj.W = 2*(rand([szs(1:end-1),Mout]) - 0.5); 
 %       fan_in = prod(szs);
 %       fan_out = Mout;
 %       obj.W = obj.W * sqrt(6/(fan_in + fan_out));

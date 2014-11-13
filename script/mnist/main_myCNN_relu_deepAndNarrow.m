@@ -49,13 +49,13 @@ h.transArr{end+1} = trans_sub(2);
 % h.transArr{end+1} = trans_act_relu();
 
 % convolution, kernel size 3, #output map = 12
-h.transArr{end+1} = trans_conv(5, 12);
+h.transArr{end+1} = trans_conv(3, 12);
 h.transArr{end}.hpmker = param_mgr_naive();
 h.transArr{end}.hpmb = param_mgr_naive();
 % activation
 h.transArr{end+1} = trans_act_relu();
 % convolution, kernel size 3, #output map = 12
-h.transArr{end+1} = trans_conv(5, 12);
+h.transArr{end+1} = trans_conv(3, 12);
 h.transArr{end}.hpmker = param_mgr_naive();
 h.transArr{end}.hpmb = param_mgr_naive();
 % activation

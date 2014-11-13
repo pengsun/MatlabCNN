@@ -11,7 +11,7 @@ train_y = double(train_y');
 test_y = double(test_y');
 K = size(train_y,1);
 
-s = RandStream('mt19937ar','Seed',45);
+s = RandStream('mt19937ar','Seed',1394);
 RandStream.setGlobalStream(s);
 %%
 % rand('state',0);
