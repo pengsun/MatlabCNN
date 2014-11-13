@@ -6,7 +6,9 @@ Matlab codes for 2D Convolutional Neural Network
 Inspired by "https://github.com/rasmusbergpalm/DeepLearnToolbox" and "https://github.com/vlfeat/matconvnet", but aims at educational purpose. Provides carefully desined matlab class hierachy that helps one to understand the workflow of Convolutional Neural Network and Multi Layer Perceptron (MLP) by simply reading the code. 
 
 ## Summary:
-* Basical layer (M-to-N transform): Full connection, Convolutional, Subsampling (Average Pooling)
+* Basical layer (M-to-N transform): 
+ * Full connection, Convolutional
+ * Average Pooling, Max Pooling
 * Auxiliary layer: Local Response Normalization
 * Activation layer (pointwise transform): Sigmoid, Relu
 * Regularization: Dropout (implemented as pointwise transform), Max-norm constraint
@@ -21,7 +23,6 @@ Inspired by "https://github.com/rasmusbergpalm/DeepLearnToolbox" and "https://gi
  * Display loss 
  * Continue training from loaded model
 * trans 
- * Max pooling
  * Convolutional layer picking random subset of input feature maps
 * Maxout?
 
