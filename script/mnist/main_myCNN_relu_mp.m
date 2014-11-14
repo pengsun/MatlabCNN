@@ -61,7 +61,7 @@ h.lossType = loss_softmax();
 
 %%% other parameters
 h.batchsize = 50;
-h.numepochs = 20;
+h.numepochs = 1;
 %% train
 % rand('state',0);
 h = h.train(train_x, train_y);

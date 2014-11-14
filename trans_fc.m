@@ -1,5 +1,5 @@
 classdef trans_fc < trans_basic
-  %TRANS_FC Summary of this class goes here
+  %TRANS_FC Full Connection
   %   Detailed explanation goes here
   
   properties
@@ -21,8 +21,8 @@ classdef trans_fc < trans_basic
       obj.Mo = Mo_;
       
       obj.c = inf;
-      obj.hpmW = param_mgr_momentum();
-      obj.hpmb = param_mgr_momentum();
+      obj.hpmW = param_mgr_fmwl();
+      obj.hpmb = param_mgr_fmwl();
     end
     
     function [obj, data_o] = ff(obj, data_i) 

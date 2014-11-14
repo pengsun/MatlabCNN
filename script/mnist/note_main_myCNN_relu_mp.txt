@@ -1,0 +1,147 @@
+%% data
+clear all;
+load mnist_uint8;
+
+train_x = double(reshape(train_x',28,28,60000))/255;
+test_x = double(reshape(test_x',28,28,10000))/255;
+train_y = double(train_y');
+test_y = double(test_y');
+K = size(train_y,1);
+
+s = RandStream('mt19937ar','Seed',1394);
+RandStream.setGlobalStream(s);
+%%
+% rand('state',0);
+% tr_ind = randsample(60000, 10000);
+% train_x = train_x(:,:, tr_ind);
+% train_y = train_y(:, tr_ind);
+% te_ind = randsample(10000, 2000);
+% test_x = test_x(:,:, te_ind);
+% test_y = test_y(:, te_ind);
+%% Image Mean Subtraction
+tmp = cat(3, train_x, test_x);
+mu = mean(tmp, 3);
+
+train_x = bsxfun(@minus, train_x, mu);
+test_x = bsxfun(@minus, test_x, mu);
+%% init
+h = myCNN();
+
+%%% layers
+% convolution, kernel size 5, #output map = 6
+h.transArr{end+1} = trans_conv(5, 6); 
+h.transArr{end}.hpmker = param_mgr_fmwl();
+h.transArr{end}.hpmb = param_mgr_fmwl();
+
+% subsample, scale 2
+h.transArr{end+1} = trans_mp(2); 
+% activation
+h.transArr{end+1} = trans_act_relu(); % trick: after mp, less computations
+
+% convolution, kernel size 5, #output map = 12
+h.transArr{end+1} = trans_conv(5, 12);
+h.transArr{end}.hpmker = param_mgr_fmwl();
+h.transArr{end}.hpmb = param_mgr_fmwl();
+
+% subsample, scale 2
+h.transArr{end+1} = trans_mp(2);
+% activation
+h.transArr{end+1} = trans_act_relu();
+
+% full connection, #output map = #classes
+h.transArr{end+1} = trans_fc(K);
+h.transArr{end}.hpmW = param_mgr_fmwl();
+h.transArr{end}.hpmb = param_mgr_fmwl();
+
+%%% loss
+h.lossType = loss_softmax();
+
+%%% other parameters
+h.batchsize = 50;
+h.numepochs = 20;
+%% train
+% rand('state',0);
+h = h.train(train_x, train_y);
+%% test
+pre_y = h.test(test_x);
+[~,pre_c] = max(pre_y);
+[~,test_c] = max(test_y);
+err = mean(pre_c ~= test_c);
+fprintf('err = %d\n', err);
+%% results
+%plot mean squared error
+figure; plot(h.rL);
+
+% fprintf('err = %d\n',err);
+% assert(err<0.12, 'Too big error');
+
+>> main_myCNN_relu_mp
+epoch 1/2
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 72.288471 seconds.
+epoch 2/2
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 72.018970 seconds.
+err = 2.310000e-02
+>> main_myCNN_relu_mp
+epoch 1/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 75.954681 seconds.
+epoch 2/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 79.102452 seconds.
+epoch 3/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 78.464017 seconds.
+epoch 4/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 76.482501 seconds.
+epoch 5/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 76.585133 seconds.
+epoch 6/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 78.632665 seconds.
+epoch 7/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 78.449595 seconds.
+epoch 8/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 76.928982 seconds.
+epoch 9/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 73.388260 seconds.
+epoch 10/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 74.924383 seconds.
+epoch 11/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 87.343495 seconds.
+epoch 12/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 83.144047 seconds.
+epoch 13/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 84.865071 seconds.
+epoch 14/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 75.480090 seconds.
+epoch 15/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 76.297038 seconds.
+epoch 16/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 75.733545 seconds.
+epoch 17/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 75.019622 seconds.
+epoch 18/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 74.285660 seconds.
+epoch 19/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 73.613635 seconds.
+epoch 20/20
+10%...20%...30%...40%...50%...60%...70%...80%...90%...100%...
+Elapsed time is 74.101792 seconds.
+err = 1.340000e-02

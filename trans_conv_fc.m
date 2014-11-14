@@ -1,20 +1,16 @@
-classdef trans_conv < trans_basic
-  %TRANS_CONV Convolution
-  %   Detailed explanation goes here
+classdef trans_conv_fc < trans_basic
+  %TRANS_CONV_FC Convolution, fully connected feature maps
+  %    Each output (feature) map is fully connected to all input maps
   
   properties
     ks; % [1]. kernel size
     M; % [1]. #output maps
-    MM; % [1]. #input maps connected for each output map
     
     ker; 
-    % [ks,ks,MM, Mo]. the kernels. 
+    % [ks,ks,Min, Mout]. the kernels. 
     % Mi = #input maps, Mo = #output maps
     b; 
     % [Mout]. bias
-    indMask; 
-    % [Mi, Mo]. Indicator for the input-output map connection.
-    % Each colum has MM 1s with the other elements 0.
     
     dker; % [ks,ks,Min, Mout]. the kernels derivatives. 
     db; % [Mout]. bias derivatives
@@ -24,11 +20,9 @@ classdef trans_conv < trans_basic
   end
   
   methods
-    function obj = trans_conv(ks_, M_, varargin)
+    function obj = trans_conv_fc(ks_, M_)
       obj.ks = ks_;
       obj.M = M_;
-      obj.MM = -1;
-      if ( ~isempty(varargin) ), obj.MM = varargin{1}; end
       
       obj.hpmker = param_mgr_fmwl();
       obj.hpmb = param_mgr_fmwl();
@@ -39,21 +33,23 @@ classdef trans_conv < trans_basic
       sz = size( data_i.a );
       data_o.a = zeros( [obj.szs_out(1:end-1), sz(end)] );
       Mout = obj.szs_out(3);
-      Min = obj.szs_in(3);
-      for j = 1 : Mout       
-        % convolution: for each connected input map
+      for j = 1 : Mout
+        % convolution:
+        % a_in: [Hin,Win,Min, N]
+        % the kernel: [ks,ks,Min, 1]
+        % tmp: [Hou,Wou,1,N]
+        % z = convn(a_in, obj.ker(:,:,:,j), 'valid'); % TODO: check this
+        
+        % convolution:
+        sz = size(data_i.a);
+        Min = sz(3);
         z2 = [];
-        ii = 0; % sub-index for input map connected to j
         for i = 1 : Min
-          if ( ~obj.indMask(i,j) ), continue; end % not connected, skip
-          
-          ii = ii + 1; % input map index
-          tt = convn(squeeze(data_i.a(:,:,i,:)),... % note: i
-                     obj.ker(:,:,ii,j),...          % note: ii
-                     'valid');
+          tt = convn(squeeze(data_i.a(:,:,i,:)),...
+                     obj.ker(:,:,i,j),  'valid');
           if (isempty(z2)), z2 = zeros( size(tt) ); end
           z2 = z2 + tt;
-        end % for i
+        end
         
         % no non-linear activation!
         data_o.a(:,:,j,:) = z2 + obj.b(j); % [Hou,Wou,1,N] + 1
@@ -68,16 +64,12 @@ classdef trans_conv < trans_basic
 
       for i = 1 : Mi
         z = zeros( [obj.szs_in(1),obj.szs_in(2),N] );
-
         for j = 1 : Mo
-          if ( ~obj.indMask(i,j) ), continue; end % not connected, skip
-          
-          ii = sum( obj.indMask(1:i, j) ); % TODO: a reverse index be better
-          z = z + convn(squeeze( data_o.d(:,:,j,:) ), ... % note: j
-                        rot180( obj.ker(:,:,ii,j) ), ...  % note: ii
-                       'full');
+          tmp_ker = rot180( obj.ker(:,:,i,j) );
+          z = z + convn(...
+            squeeze(data_o.d(:,:,j,:)), tmp_ker, 'full');
         end % for j
-        data_i.d(:,:,i,:) = z; % note: i
+        data_i.d(:,:,i,:) = z; 
       end % for i
     end % deriv_input
     
@@ -90,20 +82,14 @@ classdef trans_conv < trans_basic
       obj.db = zeros(Mo,1);
       for j = 1 : Mo
         %%% calculate dker
-        ii = 0;
         for i = 1 : Mi
           % TODO: check this!
 %           obj.dker(:,:,i,j) = Nden .* ...
 %             rot180(convn(squeeze(data_i.a(:,:,i,:)),...
 %                          rot180(squeeze(dxo(:,:,j,:))),...
 %                          'valid') );
-
-          if ( ~obj.indMask(i,j) ), continue; end % not connected, skip
-          ii = ii + 1; % input map index
-          obj.dker(:,:,ii,j) = Nden .* ...       % note: ii
-            convn(flipall(data_i.a(:,:,i,:)),... % note: i
-                  data_o.d(:,:,j,:), ...         % note: j
-                  'valid');
+          obj.dker(:,:,i,j) = Nden .* ...
+            convn(flipall(data_i.a(:,:,i,:)), data_o.d(:,:,j,:), 'valid');
         end % for i
         
         %%% calculate db
@@ -123,20 +109,12 @@ classdef trans_conv < trans_basic
       
       % set input map size
       obj.szs_in = szs;
-      Mi = szs(3);
-      
-      % index mask for connected input maps
-      if (obj.MM<0), obj.MM = szs(3); end % unset; set it fully connected
-      if (obj.MM>Mi), obj.MM = Mi; end % no more than #input maps
-      obj.indMask = false(obj.MM, obj.M);
-      for i = 1 : obj.M
-        tmp = randsample(Mi, obj.MM);
-        obj.indMask(tmp, i) = true;
-      end
       
       % randomly initialize the kernels
+      Min = szs(3);
+      Mout = obj.M;
       f = 0.01;
-      obj.ker = f * randn( [obj.ks, obj.ks, obj.MM, obj.M] ); 
+      obj.ker = f * randn( [obj.ks,obj.ks,Min, Mout] ); 
 
 %       Min = szs(3);
 %       Mout = obj.M;
@@ -146,13 +124,13 @@ classdef trans_conv < trans_basic
 %       obj.ker = obj.ker * sqrt(6/(fan_in + fan_out));
 
       % set zeros the bias
-      obj.b = zeros(obj.M, 1);
+      obj.b = zeros(Mout,1);
       
       % deduce the output map size
       tmp = [szs(1), szs(2)];
       N = szs(4);
       obj.szs_out = ...
-        [tmp(1)-obj.ks+1, tmp(2)-obj.ks+1, obj.M, N];
+        [tmp(1)-obj.ks+1, tmp(2)-obj.ks+1, Mout, N];
     end
     
   end % methods
