@@ -11,7 +11,7 @@ classdef trans_sub < trans_basic
       obj.scale = scale_;
     end
     
-    function [obj, data_o] = ff(obj, data_i) 
+    function [obj, data_o] = ff(obj, data_i, data_o) 
     %
       % first average
       avg_tmpl = ones(obj.scale,obj.scale);

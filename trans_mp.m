@@ -12,7 +12,7 @@ classdef trans_mp < trans_basic
       obj.scale = scale_;
     end
     
-    function [obj, data_o] = ff(obj, data_i) 
+    function [obj, data_o] = ff(obj, data_i, data_o) 
     %
       [data_o.a, obj.idx] = MaxPooling(data_i.a, [obj.scale,obj.scale]);
     end % ff    
@@ -20,7 +20,13 @@ classdef trans_mp < trans_basic
     function data_i = deriv_input(obj, data_i, data_o)
     % data_i.d: [Hi,Wi,Mi,N]
     % data_o.d: [Ho,Wo,Mo,N], where [Hi,Wi] = s*[Ho,Wo]
-      data_i.d  = zeros( obj.szs_in );
+      
+      % infer the size
+      N = data_o.N;
+      szs = obj.szs_in; szs(end) = N;
+      % initialize
+      data_i.d  = zeros( szs );
+      % up-pooling
       data_i.d( obj.idx ) = data_o.d(:);
     end % deriv_input
     

@@ -28,7 +28,7 @@ classdef trans_conv_fc < trans_basic
       obj.hpmb = param_mgr_fmwl();
     end
     
-    function [obj, data_o] = ff(obj, data_i) 
+    function [obj, data_o] = ff(obj, data_i, data_o) 
     % 
       sz = size( data_i.a );
       data_o.a = zeros( [obj.szs_out(1:end-1), sz(end)] );

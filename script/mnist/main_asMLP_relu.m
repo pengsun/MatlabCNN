@@ -18,7 +18,6 @@ K = size(train_y,1);
 % test_x = test_x(:,:, te_ind);
 % test_y = test_y(:, te_ind);
 %% init
-
 h = myCNN();
 
 %%% layers

@@ -22,8 +22,9 @@ RandStream.setGlobalStream(s);
 % test_x = test_x(:,:, te_ind);
 % test_y = test_y(:, te_ind);
 %% Image Mean Subtraction
-tmp = cat(3, train_x, test_x);
-mu = mean(tmp, 3);
+% tmp = cat(3, train_x, test_x);
+% mu = mean(tmp, 3);
+mu = mean(train_x, 3);
 
 train_x = bsxfun(@minus, train_x, mu);
 test_x = bsxfun(@minus, test_x, mu);
@@ -41,8 +42,8 @@ h.transArr{end+1} = trans_mp(2);
 % activation
 h.transArr{end+1} = trans_act_relu(); % trick: after mp, less computations
 
-% convolution, kernel size 5, #output map = 12, #input map subset size = 4
-h.transArr{end+1} = trans_conv(5, 12, 6);
+% convolution, kernel size 5, #output map = 12, #input map subset size = 5
+h.transArr{end+1} = trans_conv(5, 12, 5);
 h.transArr{end}.hpmker = param_mgr_fmwl();
 h.transArr{end}.hpmb = param_mgr_fmwl();
 
@@ -61,7 +62,7 @@ h.lossType = loss_softmax();
 
 %%% other parameters
 h.batchsize = 50;
-h.numepochs = 100;
+h.numepochs = 10;
 %% train
 % rand('state',0);
 h = h.train(train_x, train_y);
@@ -77,3 +78,5 @@ figure; plot(h.rL);
 
 % fprintf('err = %d\n',err);
 % assert(err<0.12, 'Too big error');
+%% save model
+save('mo_for_vis.mat','h','mu');

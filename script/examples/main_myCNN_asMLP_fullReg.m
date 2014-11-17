@@ -26,7 +26,7 @@ K = size(train_y,1);
 h = myCNN();
 
 % parameters
-h.batchsize = 100;
+h.batchsize = 1;
 h.numepochs = 2000;
 cc = 2;
 

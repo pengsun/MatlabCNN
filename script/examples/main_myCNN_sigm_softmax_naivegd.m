@@ -52,7 +52,7 @@ h.transArr{end}.hpmb = param_mgr_naive();
 h.lossType = loss_softmax();
 
 %%% other parameters
-h.batchsize = 50;
+h.batchsize = 1;
 h.numepochs = 1;
 %% train
 h = h.train(train_x, train_y);

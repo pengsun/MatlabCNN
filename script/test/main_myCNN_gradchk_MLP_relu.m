@@ -43,6 +43,7 @@ for j = 1 : nb
     h = init_trans_param(h, sz);
   end
   
+  h = init_dataArr(h, N/nb);
   h = ff(h, batch_x);
   h = bp(h, batch_y);
   myCNN_gradchk(h, batch_x, batch_y);

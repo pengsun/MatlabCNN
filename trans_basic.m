@@ -18,7 +18,7 @@ classdef trans_basic
       obj.is_tr = true;
     end
     
-    function [obj, data_o] = ff(obj,  data_i) 
+    function [obj, data_o] = ff(obj,  data_i, data_o) 
       error('Should not be called in a base class!\n');
     end
     

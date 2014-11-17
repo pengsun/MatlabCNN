@@ -10,13 +10,13 @@ train_y = double(train_y');
 test_y = double(test_y');
 K = size(train_y,1);
 %%
-% rand('state',0);
-% tr_ind = randsample(60000, 20000);
-% train_x = train_x(:,:, tr_ind);
-% train_y = train_y(:, tr_ind);
-% te_ind = randsample(10000, 2000);
-% test_x = test_x(:,:, te_ind);
-% test_y = test_y(:, te_ind);
+rand('state',0);
+tr_ind = randsample(60000, 20000);
+train_x = train_x(:,:, tr_ind);
+train_y = train_y(:, tr_ind);
+te_ind = randsample(10000, 2000);
+test_x = test_x(:,:, te_ind);
+test_y = test_y(:, te_ind);
 %% init
 cc = 2;
 
@@ -45,7 +45,7 @@ h.transArr{end}.c = cc;
 h.lossType = loss_softmax();
 
 %%% other parameters
-h.batchsize = 50;
+h.batchsize = 1;
 h.numepochs = 4;
 %% train
 h = h.train(train_x, train_y);

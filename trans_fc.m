@@ -25,11 +25,10 @@ classdef trans_fc < trans_basic
       obj.hpmb = param_mgr_fmwl();
     end
     
-    function [obj, data_o] = ff(obj, data_i) 
+    function [obj, data_o] = ff(obj, data_i, data_o) 
     % Feed Forward  
     %
-      sz = size(data_i.a);
-      N = sz(end);
+      N = data_i.N;
       Mfe = prod(obj.szs_in(1:end-1)); % #feature
       aa_in = reshape(data_i.a, Mfe, N); % [Mfe,N]
       WW = reshape(obj.W, Mfe, obj.Mo); % [Mfe, Mo]
@@ -50,14 +49,16 @@ classdef trans_fc < trans_basic
       tmp = WW * data_o.d; % 
       
       % restore to multi-dim array
-      data_i.d = reshape(tmp, obj.szs_in);
+      N = data_o.N;
+      szsin = obj.szs_in; szsin(end) = N;
+      data_i.d = reshape(tmp, szsin);
     end % deriv_input
     
     function obj = deriv_param(obj, data_i, data_o)
       sz = size(obj.W);
       %Mout = sz(end);
       MM = prod( sz(1:end-1) );
-      N = size(data_o.d, 2);
+      N = data_o.N;
       
       %%% dW
       % concatenate in vector form

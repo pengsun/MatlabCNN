@@ -34,10 +34,10 @@ classdef trans_conv < trans_basic
       obj.hpmb = param_mgr_fmwl();
     end
     
-    function [obj, data_o] = ff(obj, data_i) 
+    function [obj, data_o] = ff(obj, data_i, data_o) 
     % 
-      sz = size( data_i.a );
-      data_o.a = zeros( [obj.szs_out(1:end-1), sz(end)] );
+      N = data_i.N;
+      data_o.a = zeros( [obj.szs_out(1:end-1), N] );
       Mout = obj.szs_out(3);
       Min = obj.szs_in(3);
       for j = 1 : Mout       
@@ -64,7 +64,7 @@ classdef trans_conv < trans_basic
 
       Mi = obj.szs_in(3); % assert(Mi == size(data_i.d,3));
       Mo = obj.szs_out(3); % assert(Mo == size(data_o.a,3));
-      N = size(data_o.d, 4); % assert(N == size(data_o.a,4));
+      N = data_o.N; % assert(N == size(data_o.a,4));
 
       for i = 1 : Mi
         z = zeros( [obj.szs_in(1),obj.szs_in(2),N] );

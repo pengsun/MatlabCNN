@@ -54,7 +54,7 @@ classdef myCNN
       obj = init_trans_param(obj, szs);
       
       % initialize dataArr
-      obj.dataArr = cell(1, numel(obj.transArr)+1);
+      obj = init_dataArr(obj, obj.batchsize);
       
       % Stochastic Descent for #epochs
       obj.rL = [];
@@ -100,14 +100,18 @@ classdef myCNN
       end
       
       % initialize data array for testing
+      N = size(X,3);
       dataPreArr = cell(numel(obj.transArr)+1, 1);
+      for i = 1 : numel(dataPreArr)
+        dataPreArr{i}.N = N;
+      end
       
       % calculate .a for dataTeArr{1} (initialization)
       dataPreArr{1}.a(:,:,1,:) = X;
       % calculate .a for dataTeArr{2:L+1}
       for i = 1 : numel(obj.transArr)
-        [obj.transArr{i}, dataPreArr{i+1}] = ff(...
-          obj.transArr{i}, dataPreArr{i} );
+        [obj.transArr{i}, dataPreArr{i+1}] = ff(obj.transArr{i},...
+          dataPreArr{i}, dataPreArr{i+1});
       end % for i
       
       % set Ypre
@@ -128,6 +132,13 @@ classdef myCNN
       end % for i
     end
     
+    function obj = init_dataArr(obj, N)
+      obj.dataArr = cell(1, numel(obj.transArr)+1);
+      for i = 1 : numel(obj.dataArr)
+        obj.dataArr{i}.N = N;
+      end % i
+    end % init_dataArr
+    
     function obj = ff(obj, xx)
     % Feed Forward  
     % Input:
@@ -139,8 +150,8 @@ classdef myCNN
       
       % calculate .a for dataArr{2:L+1}
       for i = 1 : numel(obj.transArr)
-        [obj.transArr{i}, obj.dataArr{i+1}] = ff(...
-          obj.transArr{i}, obj.dataArr{i} );
+        [obj.transArr{i}, obj.dataArr{i+1}] = ff(obj.transArr{i}, ...
+          obj.dataArr{i}, obj.dataArr{i+1} );
       end % for i
     end % ff
     
