@@ -14,6 +14,7 @@ Inspired by "https://github.com/rasmusbergpalm/DeepLearnToolbox" and "https://gi
 * Regularization: Dropout (implemented as pointwise transform), Max-norm constraint
 * Parameter updating: Stochastic Gradient Descent (mini-batch) with Momentum and Weight Decay
 * Loss: Least Square (for classification/regression), Softmax/Cross-entropy/Logistic-loss (for classification)
+* Visualization: class-model and class-saliency map 
 
 **Caution: Feel free to use the code, but it is primarily for my personal playing around and the developement is ongoing, so no guarantee for bug-free:)**
 
