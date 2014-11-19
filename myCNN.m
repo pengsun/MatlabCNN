@@ -22,7 +22,7 @@ classdef myCNN
   end
   
   methods
-    function obj = myCNN(obj)
+    function obj = myCNN()
       obj.batchsize = 50; % #instances in a batch
       obj.numepochs = 1; % #epochs
       

@@ -1,14 +1,15 @@
 %%
-m = 512;
-h = 300;
-mm = 128;
+X = 512;
+Z = 300;
 N = 1;
-k=3;
+k = 5;
 
-sz = [m,m,h,N];
-sztmpl = [k,k,2];
+% sz = [X,X,Z, N];
+% sztmpl = [k,k,k];
+sz = [X,X, N];
+sztmpl = [k,k];
 
-n = 10;
+n = 10000;
 %%
 gc=convn(gpuArray.rand(sz,'single'),gpuArray.rand(sztmpl,'single'));
 tic;
